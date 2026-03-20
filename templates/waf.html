@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WAF Detector</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="menu">
+        <h2>BUG FREE</h2>
+    </div>   
+
+    <a href="/dashboard">Dashboard</a>    
+    <a href="/nmap">Nmap Scan</a>
+    <a href="/ssl-check">SSL Check</a>
+    <a href="/headers-check">Headers Check</a>
+     <a href="/tech-check">Tech Detect</a>
+    <a href="/dirscan">Dir Scan</a>
+    <a href="/subdomain">Subdomain Scan</a>
+    <a href="/sqli-nosql">Injection Scanner</a>
+    <a href="/waf-check">WAF Detector</a>
+    <a href="/js-analyzer">JS Analyzer</a>
+    <!-- <a href="/param-discovery">Parameter Scanner</a> -->
+    <a href="/logout" class="logout-link">Logout</a>
+
+</div>
+
+<div class="main">
+
+<div class="topbar">
+    <h1>WAF Detector</h1>
+</div>
+
+<div class="card" style="max-width:500px; height:auto;">
+
+<form method="POST">
+    <input type="text" name="url" placeholder="Enter URL">
+    <button class="btn btn-primary">Check WAF</button>
+</form>
+
+{% if result %}
+    <div style="margin-top:15px;">
+
+        {% if result.error %}
+            <p style="color:red;"> {{ result.error }}</p>
+        {% else %}
+
+            <p><b>Status:</b> {{ result.status }}</p>
+
+            <b>WAF Detection:</b><br>
+
+            {% for w in result.waf %}
+                <p> {{ w }}</p>
+            {% endfor %}
+
+        {% endif %}
+
+    </div>
+{% endif %}
+
+{% if result %}
+
+    {% if result.error %}
+        <p style="color:red;"> {{ result.error }}</p>
+    {% else %}
+
+        <p><b>Status:</b> {{ result.status }}</p>
+
+        <b>🛡️ WAF Detection:</b><br>
+        {% for w in result.waf %}
+            <p> {{ w }}</p>
+        {% endfor %}
+
+        <hr>
+
+        <h3>⚡ WAF Bypass Attempts</h3>
+
+        {% for b in result.bypass %}
+            <div style="margin-bottom:10px;">
+                <b>Payload:</b> <code>{{ b.payload }}</code><br>
+                <b>Status:</b> {{ b.status }}<br>
+                <b>Response Diff:</b> {{ b.diff }}
+            </div>
+        {% endfor %}
+
+        <p style="color:gray;">
+            Higher response difference = possible weak WAF / bypass behavior
+        </p>
+
+    {% endif %}
+
+
+{% endif %}
+
+</div>
+
+</div>
+
+</body>
+</html>

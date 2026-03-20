@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Subdomain Scanner</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="menu">
+        <h2>BUG FREE</h2>
+    </div>   
+
+    <a href="/dashboard">Dashboard</a>    
+    <a href="/nmap">Nmap Scan</a>
+    <a href="/ssl-check">SSL Check</a>
+    <a href="/headers-check">Headers Check</a>
+     <a href="/tech-check">Tech Detect</a>
+    <a href="/dirscan">Dir Scan</a>
+    <a href="/subdomain">Subdomain Scan</a>
+    <a href="/sqli-nosql">Injection Scanner</a>
+    <a href="/waf-check">WAF Detector</a>
+    <a href="/js-analyzer">JS Analyzer</a>
+    <!-- <a href="/param-discovery">Parameter Scanner</a> -->
+    <a href="/logout" class="logout-link">Logout</a>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+        <h1>Subdomain Deep Scanner</h1>
+    </div>
+
+    <div class="card" style="height:auto; max-width:550px;">
+
+        <input type="text" id="domain" placeholder="Enter domain (example.com)" 
+        style="padding:10px; margin-bottom:10px; border-radius:6px; border:none; width:100%;">
+
+        <div style="display:flex; gap:10px;">
+            <button class="btn btn-primary" onclick="generateSubCommands()">Generate</button>
+            <button class="btn btn-secondary" onclick="clearSub()">Clear</button>
+        </div>
+
+        <div id="result" style="margin-top:15px;"></div>
+
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

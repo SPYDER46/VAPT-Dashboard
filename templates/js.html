@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JS File Analyzer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+            <div class="menu">
+                <h2>BUG FREE</h2>
+            </div>   
+
+                <a href="/dashboard">Dashboard</a>    
+                <a href="/nmap">Nmap Scan</a>
+                <a href="/ssl-check">SSL Check</a>
+                <a href="/headers-check">Headers Check</a>
+                <a href="/tech-check">Tech Detect</a>
+                <a href="/dirscan">Dir Scan</a>
+                <a href="/subdomain">Subdomain Scan</a>
+                <a href="/sqli-nosql">Injection Scanner</a>
+                <a href="/waf-check">WAF Detector</a>
+                <a href="/js-analyzer">JS Analyzer</a>
+                <!-- <a href="/param-discovery">Parameter Scanner</a> -->
+                <a href="/logout" class="logout-link">Logout</a>
+
+        </div>
+
+<div class="main">
+    <div class="card">
+
+        <form method="POST">
+            <input type="text" name="url" placeholder="Enter target URL">
+            <button class="btn btn-primary">Analyze</button>
+        </form>
+
+        {% if result %}
+
+            {% if result.error %}
+                <p style="color:red">{{ result.error }}</p>
+            {% else %}
+
+                <h3>🎯 Target</h3>
+                <p>{{ result.url }}</p>
+
+                <hr>
+
+                <h3>📁 JS Files</h3>
+                {% for js in result.js_files %}
+                    <div style="color:#00ff99">{{ js }}</div>
+                {% endfor %}
+
+                <hr>
+
+                <h3>🌐 Endpoints Found</h3>
+                {% for e in result.endpoints %}
+                    <div style="color:#00ccff">🔹 {{ e }}</div>
+                {% endfor %}
+
+                <hr>
+
+                <h3>🔐 Possible Secrets</h3>
+                {% for s in result.secrets %}
+                    <div style="color:red">⚠ {{ s }}</div>
+                {% endfor %}
+
+            {% endif %}
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Parameter Discovery Scanner</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="menu">
+        <h2>BUG FREE</h2>
+    </div>
+
+    <a href="/dashboard">Dashboard</a>
+    <a href="/nmap">Nmap Scan</a>
+    <a href="/ssl-check">SSL Check</a>
+    <a href="/headers-check">Headers Check</a>
+    <a href="/dirscan">Dir Scan</a>
+    <a href="/subdomain">Subdomain Scan</a>
+    <a href="/sqli-nosql">Injection Scanner</a>
+    <a href="/waf-check">WAF Detector</a>
+    <a href="/param-discovery">Parameter Scanner</a>
+    <a href="/logout" class="logout-link">Logout</a>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+        <h1>Parameter Discovery Scanner</h1>
+    </div>
+
+    <div class="card" style="max-width:600px;">
+
+        <form method="POST">
+            <input type="text" name="url" placeholder="Enter URL (https://example.com)">
+            <button class="btn btn-primary">Scan Parameters</button>
+        </form>
+
+        {% if result %}
+
+            <div style="margin-top:20px;">
+
+                {% if result.error %}
+                    <p style="color:red;">{{ result.error }}</p>
+                {% else %}
+
+                    <h3>🎯 Target</h3>
+                    <p>{{ result.url }}</p>
+
+                    <hr>
+
+                    <h3>🧠 Discovered Parameters</h3>
+
+                    {% if result.parameters %}
+
+                        {% for p in result.parameters %}
+                            <div style="
+                                background:#111;
+                                padding:8px;
+                                margin:5px 0;
+                                border-radius:5px;
+                                color:#00ff99;
+                            ">
+                                🔹 {{ p }}
+                            </div>
+                        {% endfor %}
+
+                    {% else %}
+                        <p style="color:orange;">No parameters found</p>
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

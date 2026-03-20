@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SSL Check</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="menu">
+        <h2>BUG FREE</h2>
+    </div>   
+
+    <a href="/dashboard">Dashboard</a>    
+    <a href="/nmap">Nmap Scan</a>
+    <a href="/ssl-check">SSL Check</a>
+    <a href="/headers-check">Headers Check</a>
+    <a href="/tech-check">Tech Detect</a>
+    <a href="/dirscan">Dir Scan</a>
+    <a href="/subdomain">Subdomain Scan</a>
+    <a href="/sqli-nosql">Injection Scanner</a>
+    <a href="/waf-check">WAF Detector</a>
+    <a href="/js-analyzer">JS Analyzer</a>
+    <!-- <a href="/param-discovery">Parameter Scanner</a> -->
+    <a href="/logout" class="logout-link">Logout</a>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+        <h1>SSL Security Check</h1>
+    </div>
+
+    <div class="card" style="max-width:500px; height:auto;">
+
+        <form method="POST">
+            <input type="text" name="host" placeholder="Enter domain (example.com or https://example.com)" required>
+            <button class="btn btn-primary">Check SSL</button>
+        </form>
+
+        {% if result %}
+        <div style="margin-top:20px;">
+
+            {% if result.valid %}
+                <p><b>Status:</b> Valid SSL</p>
+                <p><b>Domain:</b> {{ result.issued_to }}</p>
+                <p><b>Issuer:</b> {{ result.issuer }}</p>
+                <p><b>Expiry:</b> {{ result.expiry }}</p>
+                <p><b>Days Left:</b> {{ result.days_left }}</p>
+
+                {% if result.days_left < 15 %}
+                    <p style="color:red;"><b>Expiring Soon!</b></p>
+                {% endif %}
+
+            {% else %}
+                <p style="color:red;"><b>SSL Error:</b> {{ result.error }}</p>
+            {% endif %}
+
+            {% if result.valid %}
+                <p style="color:#22c55e;"> Secure</p>
+            {% else %}
+                <p style="color:#ef4444;">{{ result.error }}</p>
+            {% endif %}
+
+        </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>
