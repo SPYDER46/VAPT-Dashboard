@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<!-- LINK CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="menu">
+        <h2>VAPT</h2>
+
+        <a href="/dashboard">Dashboard</a>
+        <!-- <a href="#">Scans</a>
+        <a href="#">Reports</a> -->
+    </div>
+
+    <!-- Logout at bottom -->
+    <a href="/logout" class="logout-link">Logout</a>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+        <h1>Dashboard</h1>
+
+        <div class="actions">
+            <button class="btn btn-secondary">Refresh</button>
+            <button class="btn btn-primary" onclick="openModal()">Add Tools</button>
+        </div>
+    </div>
+
+    <div class="grid">
+        {% for page in pages %}
+        <div class="card">
+
+            <h3>{{ page[1] }}</h3>
+
+            <div class="card-footer">
+                <a href="{{ page[2] }}" target="_blank">
+                    <button class="small-btn open-btn">Open</button>
+                </a>
+
+                <button class="small-btn delete-btn" onclick="confirmDelete({{ page[0] }})">
+                    Delete
+                </button>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+
+<!-- Add Modal -->
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <h3>New Tool</h3>
+        <form method="POST" action="/add_page">
+            <input type="text" name="name" placeholder="Tool Name" required>
+            <input type="url" name="url" placeholder="https://example.com" required>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+        <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div id="deleteModal" class="modal">
+    <div class="modal-content">
+        <h3>Confirm Delete</h3>
+        <p>Are you sure?</p>
+        <button class="confirm-delete" onclick="deletePage()">Yes, Delete</button>
+        <button class="cancel-btn" onclick="closeDeleteModal()">Cancel</button>
+    </div>
+</div>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

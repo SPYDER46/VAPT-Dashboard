@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            padding: 40px;
+            width: 350px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            color: white;
+        }
+
+        .login-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            outline: none;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        .input-group input::placeholder {
+            color: #ddd;
+        }
+
+        .input-group input:focus {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 12px;
+            cursor: pointer;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: #00c6ff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            background: #0072ff;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 12px;
+            color: #ccc;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+    <h2>Login</h2>
+
+    <form method="POST" action="/login">
+        <div class="input-group">
+            <input type="text" name="username" placeholder="Username" required>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password" name="password" placeholder="Password" required>
+            <span class="toggle-password" onclick="togglePassword()">👁</span>
+        </div>
+
+        <button class="login-btn">Sign In</button>
+    </form>
+
+    <div class="footer">
+        © 2026 Secure Dashboard
+    </div>
+</div>
+
+<script>
+    function togglePassword() {
+        const password = document.getElementById("password");
+        password.type = password.type === "password" ? "text" : "password";
+    }
+</script>
+
+</body>
+</html>
