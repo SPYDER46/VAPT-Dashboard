@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Clickjacking Check</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="menu">
+        <h2>BUG FREE</h2>
+    </div>
+
+    <a href="/dashboard">Dashboard</a>
+    <a href="/nmap">Nmap Scan</a>
+    <a href="/ssl-check">SSL Check</a>
+    <a href="/headers-check">Security Headers Checker</a>
+    <a href="/tech-check">Tech Detect</a>
+    <a href="/dirscan">Dir Scanner</a>
+    <a href="/subdomain">Subdomain Scanner</a>
+    <a href="/sqli-nosql">Injection Scanner</a>
+    <a href="/waf-check">WAF Detector</a>
+    <a href="/js-analyzer">JS Analyzer</a>
+    <a href="/clickjack-check">Click Jacker</a>
+    <a href="/xss-generator">XSS Generator</a>
+    <a href="/logout" class="logout-link">Logout</a>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+        <h1>Clickjacking Checker</h1>
+    </div>
+
+    <div class="card" style="height:auto; max-width:500px;">
+
+        <form method="POST" action="/clickjack-check">
+
+            <input type="text"
+                   name="url"
+                   placeholder="Enter URL (example.com)"
+                   style="padding:10px; margin-bottom:10px; border-radius:6px; border:none; width:100%;">
+
+            <div style="display:flex; gap:10px; margin-top:10px;">
+                <button class="btn btn-primary" type="submit">Check</button>
+                <button class="btn btn-secondary" onclick="clearClickjack()">Clear</button>
+            </div> 
+
+        </form>
+
+        <div id="result" style="margin-top:15px;">
+
+            {% if result %}
+
+                {% if result.error %}
+                    <p style="color:red;">{{ result.error }}</p>
+
+                {% else %}
+
+                    <p><b>URL:</b> {{ result.url }}</p>
+
+                    <p><b>Status:</b>
+                        {% if result.status == "VULNERABLE" %}
+                            <span style="color:red;">VULNERABLE </span>
+                        {% else %}
+                            <span style="color:green;">PROTECTED </span>
+                        {% endif %}
+                    </p>
+
+                    <p><b>Risk:</b> {{ result.risk }}</p>
+
+                    <p><b>X-Frame-Options:</b> {{ result["X-Frame-Options"] }}</p>
+                    <p><b>CSP:</b> {{ result["CSP"] }}</p>
+
+                    {% if result.issues %}
+                        <p><b>Issues:</b></p>
+                        <ul>
+                        {% for i in result.issues %}
+                            <li style="color:red;">{{ i }}</li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+
+                {% endif %}
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

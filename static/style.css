@@ -12,12 +12,13 @@ body {
 }
 
 /* Sidebar */
-.sidebar {
+.sidebar {  
+    top: 0;
+    left: 0;
     width: 220px;
-    height: 100vh;
+    height: 100vh;     
     background: #020617;
-    padding: 20px;
-
+    padding: 14px;
     display: flex;
     flex-direction: column;
 }
@@ -248,4 +249,53 @@ small {
     margin-top: 5px;
     font-size: 11px;
     color: #38bdf8;
+}
+
+/* GRID LAYOUT */
+.xss-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* CARD STYLE */
+.xss-card {
+    background: #0f172a;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 1px solid #1e293b;
+    transition: 0.2s;
+}
+
+/* HOVER EFFECT */
+.xss-card:hover {
+    border-color: #38bdf8;
+    transform: translateY(-3px);
+}
+
+/* PAYLOAD TEXT */
+.xss-card code {
+    color: #22c55e;
+    font-size: 13px;
+    word-break: break-all;
+}
+
+/* COPY BUTTON */
+.xss-card button {
+    align-self: flex-end;
+    padding: 6px 10px;
+    background: #38bdf8;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+/* BUTTON HOVER */
+.xss-card button:hover {
+    background: #0ea5e9;
 }

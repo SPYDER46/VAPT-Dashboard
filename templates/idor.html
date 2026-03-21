@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>{{ title }}</title>
+<title>IDOR Tester</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -15,28 +15,48 @@
 
     <div class="menu">
         <h2>BUG FREE</h2>
-    </div>
+    </div>   
 
-    <a href="/dashboard">Dashboard</a>
+    <a href="/dashboard">Dashboard</a>    
     <a href="/nmap">Nmap Scan</a>
     <a href="/ssl-check">SSL Check</a>
     <a href="/headers-check">Security Headers Checker</a>
     <a href="/tech-check">Tech Detect</a>
-    <a href="/dirscan">Dir Scanner</a>
-    <a href="/subdomain">Subdomain Scanner</a>
+    <a href="/dirscan">Dir Scan</a>
+    <a href="/subdomain">Subdomain Scan</a>
     <a href="/sqli-nosql">Injection Scanner</a>
     <a href="/waf-check">WAF Detector</a>
     <a href="/js-analyzer">JS Analyzer</a>
+    <a href="/idor-check">IDOR Tester</a>
     <a href="/clickjack-check">Click Jacker</a>
-    <a href="/xss-generator">XSS Generator</a>
     <a href="/logout" class="logout-link">Logout</a>
 
 </div>
 
 <div class="main">
-    {% block content %}{% endblock %}
+
+    <div class="topbar">
+        <h1>IDOR Security Tester</h1>
+    </div>
+
+    <div class="card" style="height:auto; max-width:600px;">
+
+        <input type="text" id="url" placeholder="Enter URL with parameter (example: ?id=1)"
+            style="padding:10px; margin-bottom:10px; border-radius:6px; border:none; width:100%;">
+
+        <div style="display:flex; gap:10px; margin-top:10px;">
+            <button class="btn btn-primary" onclick="runIDOR()">Test IDOR</button>
+            <button class="btn btn-secondary" onclick="clearIDOR()">Clear</button>
+        </div>
+
+        <div id="result" style="margin-top:20px;"></div>
+
+    </div>
+
 </div>
 
+<!-- ONLY ONE JS FILE -->
 <script src="{{ url_for('static', filename='script.js') }}"></script>
+
 </body>
 </html>

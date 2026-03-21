@@ -431,5 +431,89 @@ def js_analyzer():
 
     return render_template("js.html", result=result)
 
+@app.route("/clickjack-check", methods=["GET", "POST"])
+def clickjack_check():
+
+    if request.method == "GET":
+        return render_template("clickjack.html")
+
+    url = request.form.get("url")
+
+    try:
+        if not url:
+            return render_template("clickjack.html", result={"error": "URL is required"})
+
+        if not url.startswith("http"):
+            url = "https://" + url
+
+        r = requests.get(url, timeout=10)
+        headers = r.headers
+
+        xfo = headers.get("X-Frame-Options")
+        csp = headers.get("Content-Security-Policy")
+
+        issues = []
+
+        # -------------------------
+        # X-Frame-Options check
+        # -------------------------
+        xfo_protected = False
+
+        if xfo:
+            if "DENY" in xfo.upper() or "SAMEORIGIN" in xfo.upper():
+                xfo_protected = True
+            else:
+                issues.append("Weak X-Frame-Options policy")
+        else:
+            issues.append("Missing X-Frame-Options")
+
+        # -------------------------
+        # CSP frame-ancestors check
+        # -------------------------
+        csp_protected = False
+
+        if csp and "frame-ancestors" in csp:
+
+            if "frame-ancestors 'none'" in csp:
+                csp_protected = True
+
+            elif "frame-ancestors 'self'" in csp:
+                csp_protected = True
+
+            elif "frame-ancestors *" in csp:
+                issues.append("frame-ancestors allows ALL origins (*)")
+
+            else:
+                csp_protected = True
+
+        # -------------------------
+        # FINAL DECISION
+        # -------------------------
+        if xfo_protected or csp_protected:
+            status = "PROTECTED"
+            risk = "LOW"
+        else:
+            status = "VULNERABLE"
+            risk = "HIGH"
+            issues.append("No proper clickjacking protection detected")
+
+        result = {
+            "url": url,
+            "X-Frame-Options": xfo,
+            "CSP": csp,
+            "status": status,
+            "risk": risk,
+            "issues": issues
+        }
+
+        return render_template("clickjack.html", result=result)
+
+    except Exception as e:
+        return render_template("clickjack.html", result={"error": str(e)})
+    
+@app.route("/xss-generator")
+def xss_generator():
+    return render_template("xss.html")
+
 if __name__ == '__main__':
     app.run(debug=True)

